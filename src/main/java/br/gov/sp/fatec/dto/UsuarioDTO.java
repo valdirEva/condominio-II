@@ -14,10 +14,10 @@ public class UsuarioDTO {
 	@Size(max= 255) 
 	private String email;
 	
-	@NotBlank (message = "{senha.not.blank}")
+	
 	private String senha;
 	
-	@NotBlank (message = "{autorizacao.not.blank}")
+	
 	private String autorizacao;
 	
 	private String token;

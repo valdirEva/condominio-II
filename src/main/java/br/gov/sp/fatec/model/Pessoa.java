@@ -38,6 +38,7 @@ public class Pessoa {
 	@JsonView(View.Completo.class)
 	private Long idPessoa;
 	
+	@JsonView(View.Resumo1.class)
 	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn(name = "idApartamento")
 	private Apartamento apartamento;
@@ -52,7 +53,7 @@ public class Pessoa {
 	
 	@Column(name = "dtNascimento", nullable = false)
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonView(View.Completo.class)
+	@JsonView(View.Resumo1.class)
 	private Date dtNascimento;
 	
 	@Email // informa que entrada tem que ser email.https://projects.eclipse.org/projects/ee4j.bean-validation

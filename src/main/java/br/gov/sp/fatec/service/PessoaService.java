@@ -13,10 +13,12 @@ public interface PessoaService {
 	
 	public List<Pessoa>  buscarPessoaNome(String nome);
 	
+	public List<Pessoa>  buscaNumeroApartamento(String numeroApartamento);
+	
 	public Pessoa salvarPessoa(PessoaDTO pessoa);
 	
 	public Pessoa atualizaPessoa(Long pessoaId, PessoaDTO pessoa);
 	
-	public void excluir(String rg);
+	public void excluir(long id);
 
 }

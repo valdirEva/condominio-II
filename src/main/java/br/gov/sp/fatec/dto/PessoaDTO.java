@@ -3,12 +3,14 @@ package br.gov.sp.fatec.dto;
 import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class PessoaDTO {
 	
 	private Long numeroApartamento;
 	
 	@NotBlank (message = "{name.not.blank}")
+	@Size(min=3, max= 60)
 	private String nome;
 	
 	@NotBlank (message = "{rg.not.blank}")
@@ -19,7 +21,6 @@ public class PessoaDTO {
 	
 	
 	private String email;
-	
 	
 	private Long celular;
 	

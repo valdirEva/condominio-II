@@ -40,20 +40,28 @@ public class HistoricoController {
 		return historicoService.Listar();
 	}
 	
-	//Mapeamento para retornar todos historicos por um tipo e data
-	@GetMapping (value = "/td")
+	//Mapeamento para buscar uma lista de  apartamentos por Nome de um morador
+	@GetMapping (value = "/ap/{numeroApartamento}")
 	@ResponseStatus(HttpStatus.OK)
 	@JsonView(View.Resumo1.class)
-	public List<Historico> ListarPorTipoEDataEntrada(@RequestBody @Valid HistoricoDTO histoico){
-		return historicoService.ListarPorTipoEDataEntrada(histoico);
+	public List<Historico> buscaNumeroApartamento(@PathVariable String numeroApartamento){
+		return historicoService.buscaNumeroApartamento(numeroApartamento);
+	}
+	
+	//Mapeamento para retornar todos historicos por um tipo e data
+	@PostMapping (value = "/td")
+	@ResponseStatus(HttpStatus.OK)
+	@JsonView(View.Resumo1.class)
+	public List<Historico> ListarPorTipoEDataEntrada(@RequestBody HistoricoDTO historico){
+		return historicoService.ListarPorTipoEDataEntrada(historico);
 	}
 	
 	//Mapeamento para retornar todos historicos por um tipo 
-	@GetMapping (value = "/tipo")
+	@GetMapping (value = "/tipo/{tipo}")
 	@ResponseStatus(HttpStatus.OK)
 	@JsonView(View.Resumo1.class)
-	public List<Historico> ListarPorTipo(@RequestBody @Valid HistoricoDTO historico){
-		return historicoService.ListarPorTipo(historico);
+	public List<Historico> ListarPorTipo(@PathVariable String tipo){
+		return historicoService.ListarPorTipo(tipo);
 	}
 	
 	//Mapeamento para criar um historico

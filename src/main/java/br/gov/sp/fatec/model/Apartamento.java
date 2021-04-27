@@ -53,7 +53,8 @@ public class Apartamento {
 
 	public Long getIdApartamento() {
 		return idApartamento;
-	}
+		}
+	
 
 	public void setIdApartamento(Long idApartamento) {
 		this.idApartamento = idApartamento;
@@ -92,5 +93,5 @@ public class Apartamento {
 	}
 	
 	
-	
+
 }

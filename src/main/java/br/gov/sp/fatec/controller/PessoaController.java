@@ -40,6 +40,30 @@ public class PessoaController {
 		return pessoaService.Listar();
 	}
 	
+	//Mapeamento para buscar um apartamento por Rg de um morador
+	@GetMapping (value = "/nome/{nome}")
+	@ResponseStatus(HttpStatus.OK)
+	@JsonView(View.Completo.class)
+	public List<Pessoa>  buscaNome(@PathVariable String nome){
+		return pessoaService.buscarPessoaNome(nome);
+	}
+	
+	//Mapeamento para buscar um apartamento por Rg de um morador
+	@GetMapping (value = "/rg/{numeroRg}")
+	@ResponseStatus(HttpStatus.OK)
+	@JsonView(View.Completo.class)
+	public Pessoa  buscaNumeroRg(@PathVariable String numeroRg){
+		return pessoaService.buscarPessoaRg(numeroRg);
+	}
+	
+	//Mapeamento para buscar uma lista de  apartamentos por Nome de um morador
+	@GetMapping (value = "/ap/{numeroApartamento}")
+	@ResponseStatus(HttpStatus.OK)
+	@JsonView(View.Completo.class)
+	public List<Pessoa> buscaNumeroApartamento(@PathVariable String numeroApartamento){
+		return pessoaService.buscaNumeroApartamento(numeroApartamento);
+	}
+	
 	//Mapeamento para criar pessoa
 	@PostMapping(value = "/create")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -49,18 +73,18 @@ public class PessoaController {
 	}
 	
 	//Mapeamento para atualizar uma pessoa
-	@PutMapping("put/{pessoaId}")
+	@PutMapping("/put/{pessoaId}")
 	@ResponseStatus(HttpStatus.OK)
 	public Pessoa atualizaPessoa(@PathVariable Long pessoaId, @RequestBody @Valid PessoaDTO pessoa) {
 		return pessoaService.atualizaPessoa(pessoaId, pessoa); 
 	}
 	
 	//Mapeamento para deletar uma pessoa pelo RG.
-	@DeleteMapping("delete/{rg}")
+	@DeleteMapping("/delete/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void excluir(@PathVariable String rg) {
+	public void excluir(@PathVariable long id) {
 		
-		pessoaService.excluir(rg);
+		pessoaService.excluir(id);
 		
 	}
 

@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.serviceImpl;
 
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -35,40 +36,82 @@ public class HistoricoServiceImpl implements HistoricoService{
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public List<Historico> Listar() {
-		return historicoRepository.findAll();
+		List<Historico> historicos = historicoRepository.findAll();
+		if(historicos.isEmpty())
+		{
+			throw new NegocioException("Pesquisa sem resultado");
+		}
+		else
+			return historicos;
 	}
 	
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public List<Historico> ListarPorTipoEDataEntrada(HistoricoDTO historico){
-		return historicoRepository.findByTipoAndDtEntrada(historico.getTipo(), historico.getDtEntrada());
+		List<Historico> historicos =  historicoRepository.findByTipoAndDtEntrada(historico.getTipo(), historico.getDtEntrada());
+		if(historicos.isEmpty())
+		{
+			throw new NegocioException("Pesquisa sem resultado");
+		}
+		else
+			return historicos;
 	}
 	
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-	public List<Historico> ListarPorTipo(HistoricoDTO historico){
-		return historicoRepository.findByTipo(historico.getTipo());
+	public List<Historico> ListarPorTipo(String tipo){
+		List<Historico> historicos = historicoRepository.findByTipo(tipo);
+		if(historicos.isEmpty())
+		{
+			throw new NegocioException("Pesquisa sem resultado");
+		}
+		else
+			return historicos;
 	}
+	
+	@Override
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	public List<Historico>  buscaNumeroApartamento(String numeroApartamento){
+		
+		Apartamento apartamento = apartamentoRepository.findByNumeroApartamento(Long.parseLong(numeroApartamento));
+			List<Historico> historicos = historicoRepository.findByApartamento(apartamento);
+			if (historicos.isEmpty()) {
+				
+				throw new NegocioException(" Apartamento sem histórico");
+			}
+			
+			
+			return historicos;
+			
+		}
 	
 	@Override
 	@Transactional
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public Historico salvarHistorico(HistoricoDTO historico) {
 		Historico hitorico2 = new Historico();
-		if (apartamentoRepository.findByNumeroApartamento(historico.getNumeroApartamento())== null) {
-			
-			throw new NegocioException("Numero de apartamento não encontrado.");
-		}
-		if (pessoaRepository.findByrg(historico.getRg())== null) {
-				
-				throw new NegocioException("Numero de rg não encontrado.");
-		}
 		Apartamento apartamento= apartamentoRepository.findByNumeroApartamento(historico.getNumeroApartamento());
 		Pessoa pessoa= pessoaRepository.findByrg(historico.getRg());
+		if (pessoa == null)
+		{
+			Pessoa pessoa2 = new Pessoa();
+			pessoa2.setNome(historico.getNome());
+			pessoa2.setRg(historico.getRg());
+			pessoa2.setDtCriacao(OffsetDateTime.now());
+			pessoa = pessoaRepository.save(pessoa2);
+		}
+		
+		if (apartamento == null)
+		{
+			Apartamento apartamento2 = new Apartamento();
+			apartamento2.setNumeroApartamento(historico.getNumeroApartamento());
+			apartamento2.setDtCriacao(OffsetDateTime.now());
+			apartamento = apartamentoRepository.save(apartamento2);
+		}
 		hitorico2.setPessoa(pessoa);
 		hitorico2.setApartamento(apartamento);
 		hitorico2.setTipo(historico.getTipo());
-		hitorico2.setDtEntrada(dataHoraAtual);
+		hitorico2.setDtEntrada(OffsetDateTime.now());
 		historicoRepository.save(hitorico2);
 		return hitorico2;
 	}
@@ -76,23 +119,38 @@ public class HistoricoServiceImpl implements HistoricoService{
 	@Transactional
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public Historico atualizaHistorico(Long historicoId, HistoricoDTO historico) {
-		if (historicoRepository.findById(historicoId)== null) {
-			
-			throw new NegocioException("Historico não encontrado.");
-		}
+		
 		
 		Historico hitorico2 = historicoRepository.findById(historicoId).get();
 		
-		if (apartamentoRepository.findByNumeroApartamento(historico.getNumeroApartamento())== null) {
-			
-			throw new NegocioException("Numero de apartamento não encontrado.");
-		}
-		if (pessoaRepository.findByrg(historico.getRg())== null) {
-				
-				throw new NegocioException("Numero de rg não encontrado.");
-		}
 		Apartamento apartamento= apartamentoRepository.findByNumeroApartamento(historico.getNumeroApartamento());
 		Pessoa pessoa= pessoaRepository.findByrg(historico.getRg());
+		if (pessoa == null)
+		{
+			Pessoa pessoa2 = new Pessoa();
+			pessoa2.setNome(historico.getNome());
+			pessoa2.setRg(historico.getRg());
+			pessoa2.setDtCriacao(OffsetDateTime.now());
+			pessoa = pessoaRepository.save(pessoa2);
+		}
+		else
+		{
+			
+			pessoa.setNome(historico.getNome());
+			pessoa.setRg(historico.getRg());
+			pessoa.setDtCriacao(pessoa.getDtCriacao());
+			pessoa.setDtAtualizacao(OffsetDateTime.now());
+			pessoa = pessoaRepository.save(pessoa);
+		}
+		
+		if (apartamento == null)
+		{
+			Apartamento apartamento2 = new Apartamento();
+			apartamento2.setNumeroApartamento(historico.getNumeroApartamento());
+			apartamento2.setDtCriacao(OffsetDateTime.now());
+			apartamento = apartamentoRepository.save(apartamento2);
+		}
+		
 		hitorico2.setIdHistorico(historicoId);
 		hitorico2.setPessoa(pessoa);
 		hitorico2.setApartamento(apartamento);

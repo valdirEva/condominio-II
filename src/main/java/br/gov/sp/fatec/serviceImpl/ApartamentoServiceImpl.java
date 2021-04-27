@@ -54,7 +54,7 @@ public class ApartamentoServiceImpl implements ApartamentoService{
 		List<ApartamentoDTO> apartamentos = new LinkedList<ApartamentoDTO>();
 		for(Pessoa pessoa: pessoas ) {
 			ApartamentoDTO apartamento = new ApartamentoDTO();
-			apartamento.setNumeroApartamento(buscaNumeroRg(pessoa.getRg()).getNumeroApartamento());
+			apartamento.setNumeroApartamento(pessoaService.buscarPessoaRg(pessoa.getRg()).getApartamento().getNumeroApartamento());
 			apartamento.setNome(pessoa.getNome());
 			apartamento.setRg(pessoa.getRg());
 			apartamentos.add(apartamento);
@@ -78,12 +78,6 @@ public class ApartamentoServiceImpl implements ApartamentoService{
 		return veiculoDTO;
 	}
 	
-	@Override
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
-	public Apartamento buscaNumeroRg(String numeroRg){
-		Pessoa pessoa = pessoaService.buscarPessoaRg(numeroRg);
-		return apartamentoRepository.findByNumeroApartamento(pessoa.getApartamento().getNumeroApartamento());
-	}
 	
 	@Override
 	@Transactional
@@ -92,7 +86,7 @@ public class ApartamentoServiceImpl implements ApartamentoService{
 		Apartamento apartamento2 = new Apartamento();
 			if (apartamentoRepository.findByNumeroApartamento(apartamento.getNumeroApartamento())!= null) {
 			
-			throw new NegocioException("Já existe um apartamento cadastrado com este numro.");
+			throw new NegocioException("Já existe um apartamento cadastrado com este numero.");
 		}
 		
 		apartamento2.setNumeroApartamento(apartamento.getNumeroApartamento());

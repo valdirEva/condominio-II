@@ -15,6 +15,7 @@ public interface UsuarioService extends UserDetailsService{
 	
 	
 	public List<Usuario> Listar();
+	public List<Usuario> buscarPorNomeOuEmail(String nome, String email);
 	
 
 	public Usuario deleteUsuario(Long usuarioId);

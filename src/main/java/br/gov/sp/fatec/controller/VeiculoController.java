@@ -40,6 +40,20 @@ public class VeiculoController {
 		return veiculoService.Listar();
 	}
 	
+	@GetMapping (value = "/placa/{placaVeiculo}")
+	@ResponseStatus(HttpStatus.OK)
+	@JsonView(View.Completo.class)
+	public List<Veiculo> buscaPorPlaca(@PathVariable String placaVeiculo) {
+		return veiculoService.buscaPorPlaca(placaVeiculo);
+	}
+	
+	@GetMapping (value = "/ap/{ap}")
+	@ResponseStatus(HttpStatus.OK)
+	@JsonView(View.Completo.class)
+	public List<Veiculo> buscaPorPlaca(@PathVariable long ap) {
+		return veiculoService.buscaPorAparatmento(ap);
+	}
+	
 	//Mapeamento para criar um veiculo
 	@PostMapping(value = "/create")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -57,11 +71,11 @@ public class VeiculoController {
 	}
 
 	//Mapeamento paradeletar uma veiculo pela palca.
-	@DeleteMapping("delete/{placa}")
+	@DeleteMapping("delete/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void excluir(@PathVariable String placa) {
+	public void excluir(@PathVariable Long id) {
 		
-		veiculoService.excluir(placa);
+		veiculoService.excluir(id);
 		
 	}
 }

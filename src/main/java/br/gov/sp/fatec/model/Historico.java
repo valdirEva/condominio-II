@@ -1,6 +1,6 @@
 package br.gov.sp.fatec.model;
 
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +47,7 @@ public class Historico {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	@JsonProperty(access = Access.READ_ONLY)
 	@JsonView(View.Resumo1.class)
-	private  Date dtEntrada;
+	private  OffsetDateTime dtEntrada;
 
 	public Long getIdHistorico() {
 		return idHistorico;
@@ -81,12 +81,12 @@ public class Historico {
 		this.tipo = tipo;
 	}
 
-	public Date getDtEntrada() {
+	public OffsetDateTime getDtEntrada() {
 		return dtEntrada;
 	}
 
-	public void setDtEntrada(Date dtEntrada) {
-		this.dtEntrada = dtEntrada;
+	public void setDtEntrada(OffsetDateTime offsetDateTime) {
+		this.dtEntrada = offsetDateTime;
 	}
 	
 	

@@ -12,8 +12,6 @@ public interface ApartamentoService {
 	
 	public Apartamento buscaNumeroApartamento(Long numeroApartamento);
 	
-	public Apartamento buscaNumeroRg(String numeroRg);
-	
 	public List<ApartamentoDTO> buscaNome(String nome);
 	
 	public VeiculoDTO buscaPlaca(String placa);

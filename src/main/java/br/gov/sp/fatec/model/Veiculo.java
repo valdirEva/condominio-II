@@ -32,7 +32,7 @@ public class Veiculo {
 	
 	@ManyToOne (fetch = FetchType.EAGER)
 	@JoinColumn(name = "idApartamento")
-	
+	@JsonView(View.Resumo.class)
 	private Apartamento apartamento;
 	
 	

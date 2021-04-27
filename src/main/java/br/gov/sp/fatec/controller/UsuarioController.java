@@ -36,6 +36,11 @@ public class UsuarioController {
 		return usuarioService.Listar();
 	}
 	
+	@PostMapping(path = "/nome")
+    public List<Usuario> buscarPorNomeOuEmail(@RequestBody UsuarioDTO usuario)
+    {
+		return usuarioService.buscarPorNomeOuEmail(usuario.getNome(), usuario.getEmail());
+    }
 	
 	//Método para cadastrar usuario
 	@PostMapping(value = "/novo")
@@ -55,7 +60,7 @@ public class UsuarioController {
 	
 	
 	// metodo para deletar usuario
-	@DeleteMapping("/{usuarioId}")
+	@DeleteMapping("delete/{usuarioId}")
 	public ResponseEntity<Void> removeUsuario(@PathVariable Long usuarioId) {
 		
 		usuarioService.deleteUsuario(usuarioId);

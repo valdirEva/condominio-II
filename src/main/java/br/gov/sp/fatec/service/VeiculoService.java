@@ -11,8 +11,12 @@ public interface VeiculoService {
 	
 	public Veiculo salvarVeiculo(VeiculoDTO veiciulo);
 	
+	public List<Veiculo>  buscaPorPlaca(String placaVeiculo);
+	
+	public List<Veiculo>  buscaPorAparatmento(Long ap);
+	
 	public Veiculo atualizaVeiculo(Long veiculoId, VeiculoDTO veiculo);
 	
-	public void excluir(String placa);
+	public void excluir(Long id);
 
 }

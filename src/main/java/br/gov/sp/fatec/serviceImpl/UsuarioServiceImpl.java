@@ -39,6 +39,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 		public List<Usuario> Listar() {
 			List<Usuario> usuarios = usuarioRepo.findAll();
 			List<Usuario> usuariosret = new LinkedList<Usuario>();
+			if(usuarios.isEmpty())
+			{
+				throw new NegocioException(" Busca sem resultado");
+			}
 			for (Usuario usuario : usuarios) {
 				usuario.setSenha("");
 				usuariosret.add(usuario);
@@ -46,7 +50,24 @@ public class UsuarioServiceImpl implements UsuarioService {
 			}
 			return usuariosret;
 		}
-	
+		
+		@Override
+		@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+		public List<Usuario> buscarPorNomeOuEmail(String nome, String email)
+		{
+			List<Usuario> usuarios = usuarioRepo.findByNomeOrEmailContains(nome, email);
+			List<Usuario> usuariosret = new LinkedList<Usuario>();
+			if(usuarios.isEmpty())
+			{
+				throw new NegocioException(" Busca sem resultado");
+			}
+			for (Usuario usuario : usuarios) {
+				usuario.setSenha("");
+				usuariosret.add(usuario);
+			
+			}
+			return usuariosret;
+	}
 	
 	/*
 	 * Sobreescrevendo método para buscar no repositorio usuario por nome ou email.
